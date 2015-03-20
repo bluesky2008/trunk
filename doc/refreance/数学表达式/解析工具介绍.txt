@@ -1,0 +1,124 @@
+ 数学表达式解析-JAVA版
+目录
+工具介绍
+应用场景
+1、工具介绍
+String exp = “v>=10&&v<=2000&&v%10==0”;
+
+在 js 中，能够直接运行 eval 得到结果， java 中也可以！
+
+在 java 中运行执行这种字符串格式数学表达式的方法：
+
+1、 自己写按照算法（逆波兰）一个解析程序。
+
+2、 使用第三方的工具。
+
+1.jakarta commons JEXL. ： Apache 出品，必属精品。
+
+2.Beanshell ：动态语言，能够很好与 spring 集成。
+
+3.Java Math Expression Parser jep
+
+4.parse combinator jparsec
+
+5.JFormula:http://www.japisoft.com/formula/
+
+6.jeval:http://www.javagg.com/diary/67916522
+
+7.jdk 6.0 的 script ： java 中比较著名的 js 引擎 -mozilla 开源的 rhino ，通过动态语言的 eval 实现。
+
+8.IK Expression ：官方介绍： IK Expression 是一个开源的（ OpenSource) ，可扩展的（ Extensible ），基于 java 语言开发的一个超轻量级（ Super lightweight ）的公式化语言解析执行工具包。严重推荐 ：文档很全，易用，如果有不懂的地方，可以直接去作者的 blog 用中文交流。 http://code.google.com/p/ik-expression/
+
+协议： GNU
+
+ 
+
+8.MVEL : 很好用，极为简单 ，和 BeanShell 一样有自己的交互式环境： MVEL Shell 。
+
+使用教程：
+
+http://mvel.codehaus.org/Integration+Guide+for+2.0
+
+http://mvel.codehaus.org/Getting+Started+for+2.0
+
+语法环境：
+
+http://mvel.codehaus.org/Language+Guide+for+2.0
+
+模板：
+
+http://mvel.codehaus.org/MVEL+2.0+Templating+Guide
+
+能够像 freemarker 、 velocity 一样工作，虽然不专业功能也够用了。
+
+更新：
+
+现在MVEL已经用到了google的MVC框架sitebricks中了，其中MVEL在sitebricks中地位类似ognl之于webwork。
+
+sitebricks 见http://code.google.com/p/google-sitebricks/
+
+ 
+
+ 
+
+协议： Apache 2.0 License
+
+ 
+
+ 
+
+DEMO: （ IK Expression vs MVEL ）：
+
+IK Expression:
+
+ 
+
+[java] view plaincopy
+// 定义表达式  
+String expression = "v>=10&&v<=2000&&v%10==0" ;  
+// 给表达式中的变量 [ v ] 付上下文的值  
+List<Variable> variables = new ArrayList<Variable>();  
+variables.add(Variable. createVariable ( "v" , new Integer(10));  
+// 预编译表达式  
+PreparedExpression pe = ExpressionEvaluator. preparedCompile (expression, variables)  
+// 执行表达式  
+Boolean result = (Boolean) pe.execute();  
+System. out .println( "Result = " + result.booleanValue()); // Result = true  
+// 更改参数，再次执行预编译式  
+pe.setArgument( "v" , new Integer(11));  
+result = (Boolean) pe.execute();  
+System. out .println( "Result = " + result.booleanValue());// Result = false  
+
+ 
+
+MVEL ：
+
+ 
+
+[java] view plaincopy
+//定义表达式  
+String expression = "v>=10&&v<=2000&&v%10==0";  
+Map vars = new HashMap();//参数环境表  
+// 给表达式中的变量 [ v ]赋值   
+vars.put("v", new Integer(10));  
+// 执行表达式，返回结果  
+Boolean result = (Boolean) MVEL.eval(expression, vars);  
+System. out .println( "Result = " + result.booleanValue());// Result = true  
+// 更改参数，再次执行预编译式  
+vars.put("v", new Integer(10));  
+result = (Boolean) MVEL.eval(expression, vars);                   
+System. out .println( "Result = " + result.booleanValue());// Result = false  
+
+2、  应用场景
+通过数学公式的形式，
+
+1、 适用于常规业务系统条件的动态配置。
+
+2、 工作流的流程配置
+
+
+
+
+JAVA SPRING SPEL http://sishuok.com/forum/blogPost/list/2463.html
+ Aviator  http://www.blogjava.net/killme2008/archive/2010/09/07/331296.html   http://code.google.com/p/aviator/
+ 
